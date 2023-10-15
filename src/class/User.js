@@ -4,7 +4,7 @@ class User {
     ADMIN: 2,
     DEVELOPER: 3,
   }
-  static #list
+  static #list = []
   constructor({ email, password, role }) {
     this.email = email
     this.password = password
@@ -15,15 +15,19 @@ class User {
     if (isNaN(role)) {
       role = this.USER_ROLE.USER
     }
-    role = Object.values(this.USER_ROLE).includes(role)
-      ? role
-      : this.USER_ROLE.USER
+    role = Object.values(this.USER_ROLE).includes(role) ? role : this.USER_ROLE.USER
     return role
   }
 
   static create(data) {
-    const user = new User(Data)
+    const user = new User(data)
     this.#list.push(user)
+
+    console.log(this.#list)
+  }
+
+  static getByEmail(email) {
+    return this.#list.find((user) => user.email === email) || null
   }
 }
 

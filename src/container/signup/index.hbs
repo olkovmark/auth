@@ -1,12 +1,13 @@
 <div class='page page--background'>
   <header>
-    {{!-- {{> back-button}} --}}
+    {{> back-button}}
   </header>
 
   <form class='page__section'>
     <h1 class='page__title'>Registration</h1>
 
     <div class='form'>
+    
       <div class='form__item'>
         {{> field action = "signupForm.change" placeholder = "Email" label = "Email" name="email" }}
         <span name='email' class='form__error'>Помилка</span>
@@ -14,6 +15,10 @@
       <div class='form__item'>
         {{> field-password action = "signupForm.change"  placeholder = "Password" label = "Password" name="password" }}
         <span name='password' class='form__error'>Помилка</span>
+      </div>
+      <div class='form__item'>
+        {{> field-password action = "signupForm.change"  placeholder = "Password again" label = "PasswordAgain" name="passwordAgain" }}
+        <span name='password' class='form__error'>Помилка</span> 
       </div>
 
       <div class='form__item'>
@@ -27,8 +32,8 @@
       </div>
     </div>
 
-    <button class='button' type='button' onclick='signupForm.submit()'>Зареєструватися</button>
+    <button class='button button--disabled' type='button' onclick='signupForm.submit()'>Зареєструватися</button>
 
-    <span class='alert alert--error'>Внимание, ошибка!</span>
+    <span class='alert alert--disabled'>Внимание, помилка!</span>
   </form>
 </div>

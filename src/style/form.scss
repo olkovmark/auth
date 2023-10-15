@@ -32,6 +32,17 @@
   &:active {
     opacity: 0.3;
   }
+  &--disabled {
+    opacity: 0.5;
+
+    cursor: default;
+
+    &:hover,
+    &:active {
+      opacity: 0.5;
+      cursor: default;
+    }
+  }
 }
 
 .alert {
@@ -39,6 +50,9 @@
   border-radius: 10px;
   padding: s.space(3) s.space(4);
   font-size: 14px;
+  &--disabled {
+    display: none;
+  }
   &--success {
     border-color: s.color(green);
     color: s.color(green);
@@ -50,5 +64,11 @@
   &--progress {
     border-color: s.color(blue);
     color: s.color(blue);
+  }
+}
+
+.validation {
+  &--active {
+    border-color: s.color(red) !important;
   }
 }
