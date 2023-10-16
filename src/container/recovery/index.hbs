@@ -1,0 +1,22 @@
+<div class='page page--background'>
+  <header>
+    {{> back-button}}
+  </header>
+
+  <form class='page__section'>
+    <h1 class='page__title'>Recovery password</h1>
+
+    <div class='form'>
+    
+      <div class='form__item'>
+        {{> field action = "recoveryForm.change" placeholder = "Email" label = "Email" name="email" }}
+        <span name='email' class='form__error'>Помилка</span>
+      </div>
+      
+    </div>
+
+    <button class='button button--disabled' type='button' onclick='recoveryForm.submit()'>Відновити пароль</button>
+
+    <span class='alert alert--disabled'>Увага, помилка!</span>
+  </form>
+</div>

@@ -1,0 +1,29 @@
+<div class='page page--background'>
+  <header>
+    {{> back-button}}
+  </header>
+
+  <form class='page__section'>
+    <h1 class='page__title'>New password</h1>
+
+    <div class='form'>
+    
+      <div class='form__item'>
+        {{> field type="number" action = "recoveryConfirmForm.change" placeholder = "Code" label = "Code" name="code" }}
+        <span name='code' class='form__error'>Помилка</span>
+      </div>
+      <div class='form__item'>
+        {{> field-password action = "recoveryConfirmForm.change"  placeholder = "New password" label = "Password" name="password" }}
+        <span name='password' class='form__error'>Помилка</span>
+      </div>
+      <div class='form__item'>
+        {{> field-password action = "recoveryConfirmForm.change"  placeholder = "New password again" label = "PasswordAgain" name="passwordAgain" }}
+        <span name='password' class='form__error'>Помилка</span> 
+      </div>
+    </div>
+
+    <button class='button button--disabled' type='button' onclick='recoveryConfirmForm.submit()'>Змінити пароль</button>
+
+    <span class='alert alert--disabled'>Увага, помилка!</span>
+  </form>
+</div>
