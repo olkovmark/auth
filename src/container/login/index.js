@@ -1,14 +1,16 @@
 import { Form } from '../../script/form'
 import { REG_EXP_EMAIL, REG_EXP_PASSWORD } from '../../script/form'
-import { getSession, getTokenSession, saveSession } from '../../script/session'
-class SignupConfirmForm extends Form {
+import { saveSession } from '../../script/session'
+class LoginForm extends Form {
   FIELD_NAME = {
-    CODE: 'code',
+    EMAIL: 'email',
+    PASSWORD: 'password',
   }
   FIELD_ERROR = {
     IS_EMPTY: 'Поле пусте',
     IS_BIG: 'Long',
-    CODE: 'Code not correct',
+    EMAIL: 'Email not correct',
+    PASSWORD: 'Password error',
   }
 
   validate = (name, value) => {
@@ -18,13 +20,19 @@ class SignupConfirmForm extends Form {
     if (String(value).length > 20) {
       return this.FIELD_ERROR.IS_BIG
     }
-  }
 
+    if (name === this.FIELD_NAME.EMAIL) {
+      if (!REG_EXP_EMAIL.test(String(value))) {
+        return this.FIELD_ERROR.EMAIL
+      }
+    }
+  }
   submit = async () => {
     this.checkValid()
     this.setAlert('progress', 'Loading..')
+
     try {
-      const res = await fetch('http://localhost:3000/signup-confirm', {
+      const res = await fetch('http://localhost:3000/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -47,19 +55,22 @@ class SignupConfirmForm extends Form {
 
   convertData = () => {
     return JSON.stringify({
-      [this.FIELD_NAME.CODE]: Number(this.value[this.FIELD_NAME.CODE]),
-      token: getTokenSession(),
+      [this.FIELD_NAME.EMAIL]: this.value[this.FIELD_NAME.EMAIL],
+      [this.FIELD_NAME.PASSWORD]: this.value[this.FIELD_NAME.PASSWORD],
     })
   }
 }
 
-window.signupConfirmForm = new SignupConfirmForm()
+window.loginForm = new LoginForm()
 
 document.addEventListener('DOMContentLoaded', () => {
-  document.querySelector('.link#renew').addEventListener('click', (e) => {
-    e.preventDefault()
-    const session = getSession()
+  if (window.session) {
+    const { user } = window.session
 
-    location.assign(`/signup-confirm?renew=true&email=${session.user.email}`)
-  })
+    if (user.isConfirm) {
+      location.assign('/home')
+    } else {
+      location.assign('/signup-confirm')
+    }
+  }
 })

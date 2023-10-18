@@ -7,8 +7,53 @@ const { Confirm } = require('../class/Confirm')
 
 User.create({
   email: 'test@email.com',
-  password: 123,
+  password: 'qwer',
   role: 1,
+})
+
+router.get('/login', function (req, res) {
+  return res.render('login', {
+    name: 'login',
+    component: ['back-button', 'field', 'field-password'],
+    style: 'login',
+    title: 'Login page',
+    data: {},
+  })
+})
+
+router.post('/login', function (reg, res) {
+  const { email, password } = reg.body
+
+  if (!email || !password) {
+    return res.status(400).json({
+      message: 'Поля відсутні',
+    })
+  }
+
+  try {
+    const user = User.getByEmail(email)
+    if (!user) {
+      return res.status(400).json({
+        message: 'Невірний логін або пароль',
+      })
+    }
+
+    if (user.password !== password) {
+      return res.status(400).json({
+        message: 'Невірний логін або пароль',
+      })
+    }
+
+    const session = Session.create(user)
+    return res.status(200).json({
+      message: 'Login',
+      session,
+    })
+  } catch (error) {
+    return res.status(400).json({
+      message: 'Помилка',
+    })
+  }
 })
 
 router.get('/signup', function (req, res) {
@@ -156,6 +201,11 @@ router.post('/recovery-confirm', (req, res) => {
 })
 
 router.get('/signup-confirm', function (req, res) {
+  const { renew, email } = req.query
+  if (renew && email) {
+    const code = Confirm.create(email)
+    console.log(code)
+  }
   return res.render('signup-confirm', {
     name: 'signup-confirm',
     component: ['back-button', 'field'],
@@ -165,7 +215,6 @@ router.get('/signup-confirm', function (req, res) {
 })
 
 router.post('/signup-confirm', (req, res) => {
-  console.log(req.body)
   const { code, token } = req.body
   if (!code || !token) {
     return res.status(400).json({

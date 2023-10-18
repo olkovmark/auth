@@ -26,3 +26,14 @@ export const getTokenSession = () => {
   }
   return null
 }
+
+export const getSession = () => {
+  const json = localStorage.getItem(SESSION_KEY)
+  if (json) {
+    const session = JSON.parse(json)
+    if (session) {
+      return session
+    }
+  }
+  return null
+}

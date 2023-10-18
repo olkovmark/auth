@@ -15,6 +15,13 @@ router.get('/home', function (req, res) {
     title: 'Home',
   })
 })
+router.get('/logout', function (req, res) {
+  res.render('logout', {
+    style: 'logout',
+    name: 'logout',
+    title: 'Logout',
+  })
+})
 
 const auth = require('./auth')
 router.use('/', auth)
