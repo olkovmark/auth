@@ -1,0 +1,22 @@
+<div class='page page--background'>
+  <header>
+    {{> back-button}}
+  </header>
+
+  <form class='page__section'>
+    <h1 class='page__title'>Підтвердження погти</h1>
+<p class="page__subtitle">На ваше пошту надіслано....</p>
+
+    <div class='form'>
+    
+      <div class='form__item'>
+        {{> field type="number" action = "signupConfirmForm.change" placeholder = "Code" label = "Code" name="code" }}
+        <span name='code' class='form__error'>Помилка</span>
+      </div>
+    </div>
+
+    <button class='button button--disabled' type='button' onclick='signupConfirmForm.submit()'>Змінити пароль</button>
+
+    <span class='alert alert--disabled'>Увага, помилка!</span>
+  </form>
+</div>

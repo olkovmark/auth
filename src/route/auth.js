@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 
 const { User } = require('../class/User')
+const { Session } = require('../class/Session')
 const { Confirm } = require('../class/Confirm')
 
 User.create({
@@ -46,9 +47,14 @@ router.post('/signup', function (reg, res) {
         message: 'User already',
       })
     }
-    User.create({ email, password, role })
+    const newUser = User.create({ email, password, role })
+
+    const session = Session.create(newUser)
+
+    Confirm.create(newUser.email)
     return res.status(200).json({
       message: 'Користувач створений',
+      session,
     })
   } catch (error) {
     return res.status(400).json({
@@ -135,8 +141,67 @@ router.post('/recovery-confirm', (req, res) => {
     user.password = password
 
     console.log(user)
+
+    const session = Session.create(user)
+
     return res.status(200).json({
       message: 'Password change',
+      session,
+    })
+  } catch (error) {
+    return res.status(400).json({
+      message: error.message,
+    })
+  }
+})
+
+router.get('/signup-confirm', function (req, res) {
+  return res.render('signup-confirm', {
+    name: 'signup-confirm',
+    component: ['back-button', 'field'],
+    title: 'Signup-confirm page',
+    data: {},
+  })
+})
+
+router.post('/signup-confirm', (req, res) => {
+  console.log(req.body)
+  const { code, token } = req.body
+  if (!code || !token) {
+    return res.status(400).json({
+      message: 'Помилка',
+    })
+  }
+
+  try {
+    const session = Session.get(token)
+    if (!session) {
+      return res.status(400).json({
+        message: 'Нема сесії',
+      })
+    }
+
+    const email = Confirm.getData(code)
+
+    if (!email) {
+      return res.status(400).json({
+        message: 'Код не існуе',
+      })
+    }
+
+    if (email !== session.user.email) {
+      return res.status(400).json({
+        message: 'Код не дійсний',
+      })
+    }
+    session.user.isConfirm = true
+
+    const user = User.getByEmail(session.user.email)
+    user.isConfirm = true
+
+    return res.status(200).json({
+      message: 'Submit',
+      session,
     })
   } catch (error) {
     return res.status(400).json({

@@ -1,5 +1,6 @@
 import { Form } from '../../script/form'
 import { REG_EXP_EMAIL, REG_EXP_PASSWORD } from '../../script/form'
+import { saveSession } from '../../script/session'
 class SignupForm extends Form {
   FIELD_NAME = {
     EMAIL: 'email',
@@ -57,7 +58,6 @@ class SignupForm extends Form {
     this.checkValid()
     this.setAlert('progress', 'Loading..')
 
-    console.log(this.convertData())
     try {
       const res = await fetch('http://localhost:3000/signup', {
         method: 'POST',
@@ -70,6 +70,8 @@ class SignupForm extends Form {
       const data = await res.json()
       if (res.ok) {
         this.setAlert('success', data.message)
+        saveSession(data.session)
+        location.assign('/signup-confirm')
       } else {
         this.setAlert('error', data.message)
       }

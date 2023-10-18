@@ -8,6 +8,13 @@ router.get('/', function (req, res) {
     title: 'index',
   })
 })
+router.get('/home', function (req, res) {
+  res.render('home', {
+    style: 'home',
+    name: 'home',
+    title: 'Home',
+  })
+})
 
 const auth = require('./auth')
 router.use('/', auth)
