@@ -6,12 +6,12 @@ class User {
   }
   static #list = []
   static count = 1
+
   constructor({ email, password, role }) {
     this.email = email
     this.password = password
     this.role = User.#convertRole(role)
     this.isConfirm = false
-    this.id = this.count++
   }
   static #convertRole = (role) => {
     role = Number(role)
@@ -24,6 +24,7 @@ class User {
 
   static create(data) {
     const user = new User(data)
+    user.id = this.count++
     this.#list.push(user)
 
     return user
@@ -32,6 +33,11 @@ class User {
   static getByEmail(email) {
     return this.#list.find((user) => user.email === email) || null
   }
+  static getById(id) {
+    return this.#list.find((user) => user.id === id) || null
+  }
+
+  static getList = () => this.#list
 }
 
 module.exports = {

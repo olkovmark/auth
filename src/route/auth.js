@@ -10,6 +10,21 @@ User.create({
   password: 'qwer',
   role: 1,
 })
+User.create({
+  email: 'test2@email.com',
+  password: 'qwer',
+  role: 2,
+})
+User.create({
+  email: 'test3@email.com',
+  password: 'qwer',
+  role: 3,
+})
+User.create({
+  email: 'test4@email.com',
+  password: 'qwer',
+  role: 1,
+})
 
 router.get('/login', function (req, res) {
   return res.render('login', {
